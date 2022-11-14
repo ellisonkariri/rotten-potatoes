@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongoexpress-configmaps
+data:
+  ME_CONFIG_BASICAUTH_USERNAME: admin
+  ME_CONFIG_BASICAUTH_PASSWORD: pass 
+  ME_CONFIG_MONGODB_URL: mongodb://mongouser:mongopwd@localhost:27017/db?ssl=false

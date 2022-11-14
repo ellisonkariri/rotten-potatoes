@@ -1,0 +1,40 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: ellisonalencar/rotten-potatoes:1.3
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+             name: api-configmap
+        env:
+          - name: MONGODB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: MONGODB_USERNAME
+                name: mongodb-secret
+          - name: MONGODB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: MONGODB_PASSWORD
+                name: mongodb-secret
+
+
+  

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+spec:
+  selector:
+    matchLabels:
+      app: mongo-express    
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express:0.49
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8081
+        imagePullPolicy: Always
+
+        envFrom:
+          - configMapRef:
+              name: api-configmap
+          - configMapRef:
+              name: mongoexpress-configmaps
+
+        env:
+          - name: ME_CONFIG_MONGODB_AUTH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: ME_CONFIG_MONGODB_AUTH_USERNAME
+                name: mongodb-secret
+          - name: ME_CONFIG_MONGODB_AUTH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: mongodb-secret
